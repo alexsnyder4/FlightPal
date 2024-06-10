@@ -22,14 +22,16 @@ namespace FlightPalApi.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users
+            .Select(x => UsertoDTO(x))
+            .ToListAsync();
         }
 
         // GET: api/Users/5
-        [HttpGet("{Id}")]
-        public async Task<ActionResult<User>> GetUser(long id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserDTO>> GetUser(long id)
         {
             var user = await _context.Users.FindAsync(id);
 
@@ -38,20 +40,27 @@ namespace FlightPalApi.Controllers
                 return NotFound();
             }
 
-            return user;
+            return UsertoDTO(user);
         }
 
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(long id, User user)
+        public async Task<IActionResult> PutUser(long id, UserDTO userDTO)
         {
-            if (id != user.Id)
+            if (id != userDTO.id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            //copy data from userDTO to user except id
+            user.fName = userDTO.fName;
+            user.lName = userDTO.lName;
 
             try
             {
@@ -75,12 +84,21 @@ namespace FlightPalApi.Controllers
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<UserDTO>> PostUser(UserDTO userDTO)
         {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+           var user = new User 
+           {
+                fName = userDTO.fName,
+                lName = userDTO.lName,
+           };
 
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+           _context.Users.Add(user);
+           await _context.SaveChangesAsync();
+
+            return CreatedAtAction(
+                nameof(GetUser), 
+                new { id = user.id }, 
+                UsertoDTO(user));
         }
 
         // DELETE: api/Users/5
@@ -101,7 +119,15 @@ namespace FlightPalApi.Controllers
 
         private bool UserExists(long id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.Users.Any(e => e.id == id);
         }
+
+        private static UserDTO UsertoDTO(User user) =>
+            new UserDTO 
+            {
+                id = user.id,
+                fName = user.fName,
+                lName = user.lName,
+            };
     }
 }

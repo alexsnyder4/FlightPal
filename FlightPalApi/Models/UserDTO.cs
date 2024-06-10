@@ -1,10 +1,8 @@
 namespace FlightPalApi.Models;
 
-public class User
+public class UserDTO
 {
     public long id { get; set; }
     public string fName { get; set; }
     public string lName { get; set; }
-    public string? password { get; set; }
-    
 }

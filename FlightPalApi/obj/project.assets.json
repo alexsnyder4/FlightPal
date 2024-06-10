@@ -8294,11 +8294,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\DevProjects\\FlightPal\\FlightPalApi\\FlightPalApi.csproj",
+      "projectUniqueName": "E:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\FlightPalApi.csproj",
       "projectName": "FlightPalApi",
-      "projectPath": "E:\\DevProjects\\FlightPal\\FlightPalApi\\FlightPalApi.csproj",
+      "projectPath": "E:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\FlightPalApi.csproj",
       "packagesPath": "C:\\Users\\aweso\\.nuget\\packages\\",
-      "outputPath": "E:\\DevProjects\\FlightPal\\FlightPalApi\\obj\\",
+      "outputPath": "E:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

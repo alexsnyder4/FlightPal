@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "e:\\DevProjects\\FlightPal\\FlightPalApi\\FlightPalApi.csproj": {}
+    "e:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\FlightPalApi.csproj": {}
   },
   "projects": {
-    "e:\\DevProjects\\FlightPal\\FlightPalApi\\FlightPalApi.csproj": {
+    "e:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\FlightPalApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "e:\\DevProjects\\FlightPal\\FlightPalApi\\FlightPalApi.csproj",
+        "projectUniqueName": "e:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\FlightPalApi.csproj",
         "projectName": "FlightPalApi",
-        "projectPath": "e:\\DevProjects\\FlightPal\\FlightPalApi\\FlightPalApi.csproj",
+        "projectPath": "e:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\FlightPalApi.csproj",
         "packagesPath": "C:\\Users\\aweso\\.nuget\\packages\\",
-        "outputPath": "e:\\DevProjects\\FlightPal\\FlightPalApi\\obj\\",
+        "outputPath": "e:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
