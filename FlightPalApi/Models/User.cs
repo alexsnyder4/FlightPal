@@ -6,5 +6,5 @@ public class User
     public string fName { get; set; }
     public string lName { get; set; }
     public string? password { get; set; }
-    
+    public ICollection<Flight>? Flights { get; set; }
 }

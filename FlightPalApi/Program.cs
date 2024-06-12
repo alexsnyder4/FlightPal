@@ -6,8 +6,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<FlightPalContext>(opt =>
-    opt.UseInMemoryDatabase("FlightPal"));
+
+// Configure MySQL connection
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<FlightPalContext>(options =>
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -27,3 +31,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+

@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "zo0c+2S6iDMgzE26zVttqRoHKFg31WEfk7SQkXBnBNE=",
+  "Source": "FlightPalApi",
+  "BasePath": "_content/FlightPalApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

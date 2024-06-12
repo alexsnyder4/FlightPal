@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "e:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\FlightPalApi.csproj": {}
+    "E:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\FlightPalApi.csproj": {}
   },
   "projects": {
-    "e:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\FlightPalApi.csproj": {
+    "E:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\FlightPalApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "e:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\FlightPalApi.csproj",
+        "projectUniqueName": "E:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\FlightPalApi.csproj",
         "projectName": "FlightPalApi",
-        "projectPath": "e:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\FlightPalApi.csproj",
+        "projectPath": "E:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\FlightPalApi.csproj",
         "packagesPath": "C:\\Users\\aweso\\.nuget\\packages\\",
-        "outputPath": "e:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\obj\\",
+        "outputPath": "E:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -22,15 +22,15 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net8.0"
+          "net6.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
+          "net6.0": {
+            "targetAlias": "net6.0",
             "projectReferences": {}
           }
         },
@@ -46,32 +46,28 @@
         }
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "net6.0": {
+          "targetAlias": "net6.0",
           "dependencies": {
             "Microsoft.EntityFrameworkCore.Design": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[6.0.0, )"
             },
             "Microsoft.EntityFrameworkCore.InMemory": {
               "target": "Package",
-              "version": "[8.0.6, )"
-            },
-            "Microsoft.EntityFrameworkCore.SqlServer": {
-              "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[6.0.0, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[6.0.0, )"
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
-              "version": "[8.0.2, )"
+              "version": "[6.0.0, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[6.0.2, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -97,7 +93,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }
