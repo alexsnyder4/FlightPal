@@ -3,6 +3,7 @@ using System;
 using FlightPalApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlightPalApi.Migrations
 {
     [DbContext(typeof(FlightPalContext))]
-    partial class FlightPalContextModelSnapshot : ModelSnapshot
+    [Migration("20240808171010_RmvdFnameAndLnameFromLoginDTO")]
+    partial class RmvdFnameAndLnameFromLoginDTO
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

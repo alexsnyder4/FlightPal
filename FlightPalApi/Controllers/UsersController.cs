@@ -30,10 +30,10 @@ namespace FlightPalApi.Controllers
         }
 
         // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<UserDTO>> GetUser(long id)
+        [HttpGet("{Id}")]
+        public async Task<ActionResult<UserDTO>> GetUser(long Id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.FindAsync(Id);
 
             if (user == null)
             {
@@ -44,23 +44,24 @@ namespace FlightPalApi.Controllers
         }
 
         // PUT: api/Users/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(long id, UserDTO userDTO)
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkId=2123754
+        [HttpPut("{Id}")]
+        public async Task<IActionResult> PutUser(long Id, UserDTO userDTO)
         {
-            if (id != userDTO.id)
+            if (Id != userDTO.Id)
             {
                 return BadRequest();
             }
 
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.FindAsync(Id);
             if (user == null)
             {
                 return NotFound();
             }
-            //copy data from userDTO to user except id
-            user.fName = userDTO.fName;
-            user.lName = userDTO.lName;
+            //copy data from userDTO to user except Id
+            user.FName = userDTO.FName;
+            user.LName = userDTO.LName;
+            user.Email = userDTO.Email;
 
             try
             {
@@ -68,7 +69,7 @@ namespace FlightPalApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!UserExists(Id))
                 {
                     return NotFound();
                 }
@@ -82,14 +83,15 @@ namespace FlightPalApi.Controllers
         }
 
         // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkId=2123754
         [HttpPost]
         public async Task<ActionResult<UserDTO>> PostUser(UserDTO userDTO)
         {
            var user = new User 
            {
-                fName = userDTO.fName,
-                lName = userDTO.lName,
+                FName = userDTO.FName,
+                LName = userDTO.LName,
+                Email = userDTO.Email,
            };
 
            _context.Users.Add(user);
@@ -97,15 +99,15 @@ namespace FlightPalApi.Controllers
 
             return CreatedAtAction(
                 nameof(GetUser), 
-                new { id = user.id }, 
+                new { Id = user.Id }, 
                 UsertoDTO(user));
         }
 
         // DELETE: api/Users/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(long id)
+        [HttpDelete("{Id}")]
+        public async Task<IActionResult> DeleteUser(long Id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.FindAsync(Id);
             if (user == null)
             {
                 return NotFound();
@@ -117,17 +119,18 @@ namespace FlightPalApi.Controllers
             return NoContent();
         }
 
-        private bool UserExists(long id)
+        private bool UserExists(long Id)
         {
-            return _context.Users.Any(e => e.id == id);
+            return _context.Users.Any(e => e.Id == Id);
         }
 
         private static UserDTO UsertoDTO(User user) =>
             new UserDTO 
             {
-                id = user.id,
-                fName = user.fName,
-                lName = user.lName,
+                Id = user.Id,
+                FName = user.FName,
+                LName = user.LName,
+                Email = user.Email,
             };
     }
 }

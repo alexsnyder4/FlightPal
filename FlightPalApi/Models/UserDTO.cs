@@ -2,8 +2,8 @@ namespace FlightPalApi.Models;
 
 public class UserDTO
 {
-    public long id { get; set; }
-    public string fName { get; set; }
-    public string lName { get; set; }
-    public string email { get; set; }
+    public long Id { get; set; }
+    public string FName { get; set; }
+    public string LName { get; set; }
+    public string Email { get; set; }
 }
