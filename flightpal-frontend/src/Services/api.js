@@ -4,4 +4,7 @@ const api = axios.create({
   baseURL: 'http://localhost:5092/api', // Your backend API URL
 });
 
+export const getUsers = () => api.get('/Users');
+export const loginUser = (credentials) => api.post('/Users/login', credentials);
+
 export default api;

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\FlightPalApi.csproj": {}
+    "E:\\DevProjects\\FlightPal\\FlightPal\\flightpalapi\\FlightPalApi.csproj": {}
   },
   "projects": {
-    "E:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\FlightPalApi.csproj": {
+    "E:\\DevProjects\\FlightPal\\FlightPal\\flightpalapi\\FlightPalApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\FlightPalApi.csproj",
+        "projectUniqueName": "E:\\DevProjects\\FlightPal\\FlightPal\\flightpalapi\\FlightPalApi.csproj",
         "projectName": "FlightPalApi",
-        "projectPath": "E:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\FlightPalApi.csproj",
+        "projectPath": "E:\\DevProjects\\FlightPal\\FlightPal\\flightpalapi\\FlightPalApi.csproj",
         "packagesPath": "C:\\Users\\aweso\\.nuget\\packages\\",
-        "outputPath": "E:\\DevProjects\\FlightPal\\FlightPal\\FlightPalApi\\obj\\",
+        "outputPath": "E:\\DevProjects\\FlightPal\\FlightPal\\flightpalapi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -64,6 +64,10 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[6.0.0, )"
+            },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[9.0.0, )"
             },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
