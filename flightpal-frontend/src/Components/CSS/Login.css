@@ -1,0 +1,316 @@
+/* Reuseable Variables */
+:root {
+  --primary-color: #4682B4;
+  --secondary-color: #D3D3D3;
+  --background-color: #F5F5F5;
+  --button-color: #1E3A5F;
+  --text-color: #333333;
+  --button-text-color: #F5F5F5;
+}
+
+/* Base Global */
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background-image: linear-gradient(var(--background-color), var(--secondary-color));
+  color: var(--text-color);
+  /* To cover the entire screen */
+  background-size: cover;
+
+  /* Prevent background from repeating */
+  background-repeat: no-repeat;
+
+  /* Ensure the background is fixed while scrolling */
+  background-attachment: fixed;
+
+  /* Center the background image */
+  background-position: center;
+
+
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+.App-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.App-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-color);
+  padding: 20px;
+  margin-bottom: 20px;
+  color: var(--text-color);
+  text-align: center;
+  max-height: 40px;
+}
+
+.footer {
+  display: block;
+  background-color: black;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
+}
+
+/* Wrapper for centering the login-container */
+.login-container-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  /* Full height of the viewport */
+  width: 100vw;
+  /* Full width of the viewport */
+}
+
+/* Style for the login form container */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--secondary-color);
+  border-radius: 15px;
+  padding: 75px;
+  margin: 20px;
+  margin-bottom: 300px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Input fields and form */
+.login-container input,
+.login-container form {
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 10px;
+}
+
+.login-container input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.login-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Error message */
+.login-container p {
+  color: rgb(255, 17, 17);
+  margin: 10px 0 0 8px;
+}
+
+
+.register-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.register-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 200px;
+}
+
+.register-container input {
+  max-width: 400px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.userHome-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh; /* Full height for vertical centering */
+}
+
+.layout-container {
+  width: 100%; /* Let it take full available width */
+  max-width: 2000px; /* Or set a maximum width for the container */
+  display: flex;
+  justify-content: center; /* Center the grid layout inside the container */
+}
+
+.layout {
+  width: 100%; /* Ensure the grid spans the full width available */
+  max-width: 100%; /* Prevent it from overflowing */
+  margin: 0 auto; /* Center the entire layout horizontally */
+}
+.title {
+  display: flex;
+  justify-content: center;
+}
+
+.userInfo-container,
+.aircraftReq-container {
+  background-color: var(--secondary-color);
+  border-radius: 15px;
+  padding: 75px;
+  margin: 20px;
+  max-width: 48%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Container for each row's progress bar */
+.progress-container {
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.1);
+  /* Light background for the progress bar */
+  border-radius: 8px;
+  overflow: hidden;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+}
+
+/* The actual progress bar (filled portion) */
+.progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: rgba(98, 174, 255, 0.48);
+  /* Semi-transparent blue bar */
+  transition: width 3.5s ease;
+  /* Smooth animation */
+  z-index: 1;
+  /* Behind the text */
+}
+
+/* Text will display over the progress bar */
+.progress-container span {
+  position: relative;
+  z-index: 2;
+  /* Ensure the text stays visible */
+  white-space: nowrap;
+  /* Prevent text from wrapping */
+}
+
+/* Alternating row colors */
+.row-light {
+  background-color: #F9F9F9;
+  /* Light row */
+}
+
+.row-dark {
+  background-color: #E0E0E0;
+  /* Dark row */
+}
+
+table th,
+table td {
+  text-align: left;
+  padding: 10px;
+}
+
+.flightTable th,
+.flightTable td,
+.aircraftTable th,
+.aircraftTable td {
+  border: 1px solid #ccc;
+}
+
+.flightTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Aircraft Table styling */
+.aircraftTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Submit button */
+.button {
+  width: 100%;
+  max-width: 100px;
+  padding: 10px;
+  margin-top: 5px;
+  background-color: var(--button-color);
+  color: var(--button-text-color);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.button--submit {
+  width: 100%;
+  max-width: 100px;
+  padding: 10px;
+  margin-top: 5px;
+  background-color: var(--button-color);
+  color: var(--button-text-color);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.submit:hover {
+  background-color: #0056b3;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.logoutBtn {
+  max-width: 140px;
+  min-width: 120px;
+  min-height: 50px;
+  background-color: var(--button-color);
+  color: var(--button-text-color);
+  border-radius: 80px;
+  cursor: pointer;
+  margin-top: 50px;
+  margin-bottom: 100px;
+}
+
+.logoutBtn:hover {
+  background-color: #0056b3;
+}
+
+.aircraftForm {
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
+}
+
+.aircraftForm input {
+  padding-top: 5px;
+  margin: 2px;
+  max-width: 140px;
+}
+
+.login-logo {
+  max-width: 150px;
+  margin-bottom: 20px;
+  display: block;
+}
+

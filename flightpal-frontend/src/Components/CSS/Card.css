@@ -1,0 +1,176 @@
+.card {
+    width: 100%;  /* Ensure it spans the full grid width */
+    height: 100%;  /* Allow the height to adjust dynamically */
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.429);
+    padding: 20px;
+    transition: box-shadow .3s ease;
+    box-sizing: border-box;  /* Ensure padding is included in width/height */
+}
+
+
+.card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+.userinfo-card {
+    display:flex;
+    justify-content: space-between; /* Distributes space between left and right columns */
+    align-items: center; /* Vertically centers both columns */
+    background-color: #f0f8ff;
+}
+/* Left side: Text content (greeting, etc.) */
+.userinfo-card .user-info-text {
+    flex: 1; /* Takes up available space */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Right side: Profile picture button */
+.userinfo-card .profile-pic-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Modifier class for specific cards */
+.flights-card {
+    background-color: #f0f8ff;
+}
+
+.aircraftreqs-card {
+    background-color: #ffe4e1;
+}
+
+.edit-card {
+    background-color: #ffe4e1;
+    width:400px;
+}
+
+.weather-card {
+    background-color: #ffe4e1;
+
+  }
+
+/* Utility classes for additional tuning */
+.card--bordered {
+    border: 2px solid #ccc;
+}
+
+/* Alternating row colors */
+.row-light {
+    background-color: #F9F9F9;
+    /* Light row */
+}
+
+.row-dark {
+    background-color: #E0E0E0;
+    /* Dark row */
+}
+
+/* Aircraft Form Specific */
+.aircraftForm {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+}
+
+.aircraftForm input {
+    padding-top: 5px;
+    margin: 2px;
+    max-width: 140px;
+}
+
+.button {
+    width: 100%;
+    max-width: 110px;
+    padding: 10px;
+    margin: 5px;
+    background-color: var(--button-color);
+    color: var(--button-text-color);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.button--submit {
+    width: 100%;
+    max-width: 100px;
+    padding: 10px;
+    margin-top: 5px;
+    background-color: var(--button-color);
+    color: var(--button-text-color);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.button--edit {
+    width: 100%;
+    max-width: 100px;
+    padding: 10px;
+    margin-top: 5px;
+    background-color: var(--button-color);
+    color: var(--button-text-color);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.button--profilepic {
+    width: 100px; 
+    height: 100px;
+    padding: 0;
+    margin-top: 5px;
+    background-color: darkgray;
+    color: var(--button-text-color);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center; /* Vertically center */
+    justify-content: center; /* Horizontally center */
+}
+
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  
+  .tabs button {
+    padding: 10px;
+    border: none;
+    background-color: lightgray;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+  }
+  
+  .tabs button.active {
+    background-color: dodgerblue;
+    color: white;
+  }
+  
+  .tab-content {
+    padding: 20px;
+  }
+
+  .weather-card-zip-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .weather-card-zip-form form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+
+  .weather-card-zip-form button {
+    margin-top: 20px;
+  }
+
+  .map {
+    height: 100%;
+  }

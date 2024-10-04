@@ -1,0 +1,37 @@
+name: Deploy React App to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Make sure this matches your default branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Step 2: Set up Node.js environment
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'  # Specify your Node.js version here
+
+    # Step 3: Install dependencies
+    - name: Install dependencies
+      run: npm install
+      working-directory: flightpal/flightpal-frontend  # Adjust your frontend folder path
+
+    # Step 4: Build the React app
+    - name: Build the React app
+      run: npm run build
+      working-directory: flightpal/flightpal-frontend
+
+    # Step 5: Deploy to GitHub Pages
+    - name: Deploy to GitHub Pages
+      run: |
+        touch flightpal/flightpal-frontend/build/.nojekyll  # Ensure Jekyll is bypassed
+        npx gh-pages -d flightpal/flightpal-frontend/build  # Deploy the build folder
