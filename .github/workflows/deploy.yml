@@ -37,12 +37,14 @@ jobs:
     - name: Set git user and email
       run: |
         git config --global user.email "17a.snyder@gmail.com"  # Use your email
-        git config --global user.name "Alexsnyder4"  # Use your name
+        git config --global user.name "alexsnyder4"  # Use your name
 
 
 
     # Step 5: Deploy to GitHub Pages
     - name: Deploy to GitHub Pages
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub-provided token
       run: |
         touch flightpal-frontend/build/.nojekyll  # Ensure Jekyll is bypassed
         npx gh-pages -d flightpal-frontend/build  # Deploy the build folder
