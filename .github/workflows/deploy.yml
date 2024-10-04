@@ -13,7 +13,10 @@ jobs:
     # Step 1: Checkout the repository
     - name: Checkout code
       uses: actions/checkout@v3
-
+    # Debug Step: List directory contents to check structure
+    - name: List directory contents
+      run: ls -R
+      shell: bash
     # Step 2: Set up Node.js environment
     - name: Set up Node.js
       uses: actions/setup-node@v3
