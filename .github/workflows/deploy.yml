@@ -23,15 +23,15 @@ jobs:
     # Step 3: Install dependencies
     - name: Install dependencies
       run: npm install
-      working-directory: flightpal/flightpal-frontend  # Adjust your frontend folder path
+      working-directory: /flightpal-frontend  # Adjust your frontend folder path
 
     # Step 4: Build the React app
     - name: Build the React app
       run: npm run build
-      working-directory: flightpal/flightpal-frontend
+      working-directory: /flightpal-frontend
 
     # Step 5: Deploy to GitHub Pages
     - name: Deploy to GitHub Pages
       run: |
-        touch flightpal/flightpal-frontend/build/.nojekyll  # Ensure Jekyll is bypassed
-        npx gh-pages -d flightpal/flightpal-frontend/build  # Deploy the build folder
+        touch /flightpal-frontend/build/.nojekyll  # Ensure Jekyll is bypassed
+        npx gh-pages -d /flightpal-frontend/build  # Deploy the build folder
