@@ -3,11 +3,14 @@ name: Deploy React App to GitHub Pages
 on:
   push:
     branches:
-      - master  # Change this to 'main' if your default branch is named 'main'
+      - master  # or 'main', depending on your default branch
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
+    permissions:  # Explicitly give write permission to GITHUB_TOKEN
+      contents: write
 
     steps:
     # Step 1: Checkout the repository
@@ -18,7 +21,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '16'  # Specify your Node.js version here
+        node-version: '16'
 
     # Step 3: Install dependencies
     - name: Install dependencies
@@ -43,5 +46,3 @@ jobs:
       run: |
         touch flightpal-frontend/build/.nojekyll
         npx gh-pages -d flightpal-frontend/build --repo https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/alexsnyder4/FlightPal.git
-
-        
