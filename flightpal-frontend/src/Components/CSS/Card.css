@@ -68,6 +68,11 @@
     /* Dark row */
 }
 
+/* Grey out the card when selected */
+.greyed-out {
+    opacity: 0.5;
+}
+
 /* Aircraft Form Specific */
 .aircraftForm {
     display: flex;

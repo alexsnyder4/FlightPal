@@ -9,16 +9,16 @@ import './Components/CSS/Login.css';
 function App() {
   return (
     <EventProvider>
-      <Router> {/* No need for basename with HashRouter */}
+      <Router>
         <div className="App-container">
           <header className="App-header">
             <h1>FlightPal</h1>
           </header>
           <Routes>
+            <Route path="/" element={<Login />} /> {/* Default route */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/userhome/:userId" element={<UserHome />} />
-            <Route path="/" element={<Login />} /> {/* Default route */}
           </Routes>
         </div>
       </Router>

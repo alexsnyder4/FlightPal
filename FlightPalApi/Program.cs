@@ -5,7 +5,17 @@ using DotNetEnv;
 var builder = WebApplication.CreateBuilder(args);
 
 // Load environment variables from .env file
-DotNetEnv.Env.Load();
+
+string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+if (environment == "Development")
+{
+    DotNetEnv.Env.Load(".env.development");
+}
+else
+{
+    DotNetEnv.Env.Load(".env.production");
+}
+
 
 // Add services to the container.
 // CORS (Cross-Origin Resource Sharing) services to allow front end requests

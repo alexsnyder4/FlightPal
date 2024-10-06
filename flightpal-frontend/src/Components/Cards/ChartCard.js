@@ -3,12 +3,14 @@ import { Pie, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement } from 'chart.js';
 import '../CSS/Card.css';
 import '../CSS/Chart.css';
-import { getUserAircraft } from '../../Services/api'; // Assume this is where you fetch the aircraft data
+import { useEvent } from '../EventContext';
+import { getUserAircraft } from '../../Services/api';
 
 // Register required Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement);
 
 const AircraftChartCard = ({ userId }) => {
+  const eventEmitter = useEvent();
   const [userAircraftData, setUserAircraftData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentTab, setCurrentTab] = useState('hours'); // Default tab to 'hours'
@@ -19,13 +21,17 @@ const AircraftChartCard = ({ userId }) => {
       setIsLoading(true);
       const userAircraftData = await getUserAircraft(userId);
       if (userAircraftData.data.length === 0) {
-        setError('No aircraft yet');
+        setError('No aircraft data available.');
       } else {
         setUserAircraftData(userAircraftData.data);
         setError(null);
       }
     } catch (err) {
-        setError('Failed to fetch aircraft data');
+      if (err.response.status === 404)
+      {
+        setError('No aircraft found.')
+      }
+      setError('Failed to fetch aircraft data.');
     } finally {
       setIsLoading(false);
     }
@@ -33,18 +39,52 @@ const AircraftChartCard = ({ userId }) => {
 
   useEffect(() => {
     fetchAircraft();
-  }, [fetchAircraft]); // userId wrapped in an array as dependency
 
+    // Handle flight deletion procedure
+    const handleFlightDeleted = (flightId) => {
+      fetchAircraft(); // Re-fetch user info when a flight is deleted
+    };
+
+    // Handle flight addition procedure
+    const handleFlightAdded = (flightId) => {
+      fetchAircraft();
+    }
+
+    eventEmitter.subscribe('flightDeleted', handleFlightDeleted);
+    eventEmitter.subscribe('flightAdded', handleFlightAdded);
+
+    // Clean up subscription when the component unmounts
+    return () => {
+      eventEmitter.unsubscribe('flightDeleted', handleFlightDeleted);
+      eventEmitter.unsubscribe('flightAdded', handleFlightAdded);
+    };
+  }, [eventEmitter, fetchAircraft]); // userId wrapped in an array as dependency
+
+  // Return loading message when data is being fetched
   if (isLoading) {
     return <div>Loading chart data...</div>;
   }
   
+  // Return error message when there is an error
   if (error) {
-    return <div>{error}</div>; // Display error message if an error occurs
+    return (
+      <div className="card aircraft-chart-card card-large greyed-out"> {/* Apply greyed-out styling when there's no data */}
+        <div className="no-data-message">
+          {error} {/* Error or no-data message */}
+        </div>
+      </div>
+    );
   }
 
+  // If there's no data, display a greyed-out card with a "No data" message
   if (userAircraftData.length === 0) {
-    return <div>No aircraft data available</div>;
+    return (
+      <div className="card aircraft-chart-card card-large greyed-out">
+        <div className="no-data-message">
+          No aircraft data to display.
+        </div>
+      </div>
+    );
   }
 
   const aircraftNames = userAircraftData.map(aircraft => aircraft.model);
@@ -79,11 +119,11 @@ const AircraftChartCard = ({ userId }) => {
   // Render the correct chart based on the active tab
   const renderChart = () => {
     if (currentTab === 'hours') {
-      return <Pie data={pieData} options={{ maintainAspectRatio: false }}/>;
+      return <Pie data={pieData} options={{ maintainAspectRatio: false }}/>; 
     } else if (currentTab === 'bar') {
-      return <Bar data={barData} options={{ maintainAspectRatio: false }}/>;
+      return <Bar data={barData} options={{ maintainAspectRatio: false }}/>; 
     }
-    // Add more chart options as needed
+    // Additional chart options here
   };
 
   return (
@@ -99,7 +139,7 @@ const AircraftChartCard = ({ userId }) => {
       </div>
 
       <div className="chart-content">
-        {renderChart()} {/* Render the appropriate chart */}
+        {renderChart()} {/* Render the desired chart */}
       </div>
     </div>
   );

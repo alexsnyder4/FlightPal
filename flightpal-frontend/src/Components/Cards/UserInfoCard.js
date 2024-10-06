@@ -23,6 +23,7 @@ const UserInfoCard = ({ userId }) => {
         // Handle profile picture logic here if needed in the future
         alert("Profile picture functionality not yet implemented");
     };
+    console.log("Current mode:", process.env.NODE_ENV); //remove after testing
 
     if (error) {
         return <div>{error}</div>;

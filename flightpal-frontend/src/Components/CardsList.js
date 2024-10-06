@@ -9,4 +9,13 @@ const CardsList = [
     // Add more cards as needed
   ];
   
+  /*
+      EVENT LIST FOR EVENT MANAGER
+
+      flightAdded
+
+      flightDeleted
+
+
+  */
   export default CardsList;
