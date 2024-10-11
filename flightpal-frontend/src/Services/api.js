@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '18.220.183.91/api', // Backend API URL
+  baseURL: `${process.env.API_URL}`, // Backend API URL
 });
 
 
