@@ -21,11 +21,13 @@ else
 // CORS (Cross-Origin Resource Sharing) services to allow front end requests
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins",
-        builder => builder.AllowAnyOrigin()
+    options.AddPolicy("AllowSpecificOrigins",
+        builder => builder.WithOrigins("https://alexandersnyderportfolio.com") 
                           .AllowAnyMethod()
-                          .AllowAnyHeader());
+                          .AllowAnyHeader()
+                          .AllowCredentials());
 });
+
 
 // Register Authorization service
 builder.Services.AddAuthorization();
@@ -44,7 +46,7 @@ var app = builder.Build();
 // Configure Kestrel to listen on all interfaces
 app.Urls.Add("http://0.0.0.0:5092");
 
-app.UseCors("AllowAllOrigins");
+app.UseCors("AllowSpecificOrigins");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
