@@ -43,8 +43,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-// Configure Kestrel to listen on all interfaces
-app.Urls.Add("http://0.0.0.0:5092");
 
 app.UseCors("AllowSpecificOrigins");
 
