@@ -42,8 +42,14 @@ builder.Services.AddDbContext<FlightPalContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
+// Configure Logging
+builder.Logging.ClearProviders(); // Remove default providers if needed
+builder.Logging.AddConsole(); // Add Console logging
+builder.Logging.AddDebug(); // Add Debug logging
 
+var app = builder.Build();
+// Enable logging
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
 app.UseCors("AllowSpecificOrigins");
 
 // Configure the HTTP request pipeline.
@@ -56,7 +62,18 @@ app.UseSwagger();
     app.UseSwaggerUI();
 // Enable Authorization middleware
 app.UseAuthorization();
-
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next();
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "An error occurred while processing the request.");
+        throw; // Re-throw the error so it's handled as usual
+    }
+});
 app.MapControllers();
 
 app.Run();

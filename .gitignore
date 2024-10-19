@@ -400,3 +400,4 @@ FodyWeavers.xsd
 .env
 flightpal-frontend/.env
 node_modules
+FlightPalApi/.env.production
