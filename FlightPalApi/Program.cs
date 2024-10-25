@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using FlightPalApi.Models;
-using DotNetEnv; // You need this for loading .env files
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,40 +9,25 @@ string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"
 
 if (environment == "Development")
 {
-    // Load .env file for development mode
-    Env.Load(".env.development"); // Adjust the path if your .env file is elsewhere
+    Env.Load(".env.development");
 }
 
-// Add services to the container
-// Add CORS (Cross-Origin Resource Sharing) services to allow front-end requests
+// Add CORS policy for specific origins
 builder.Services.AddCors(options =>
 {
-    if (environment == "Development")
-    {
-        options.AddPolicy("DevelopmentPolicy", policy =>
-            policy.WithOrigins("http://localhost:3000")  // Development origin
-                  .AllowAnyMethod()
-                  .AllowAnyHeader()
-                  .AllowCredentials());
-    }
-    else
-    {
-        options.AddPolicy("ProductionPolicy", policy =>
-            policy.WithOrigins("https://alexandersnyderportfolio.com")  // Production origin
-                  .AllowAnyMethod()
-                  .AllowAnyHeader()
-                  .AllowCredentials());
-    }
+    options.AddPolicy("AllowSpecificOrigins", policy =>
+        policy.WithOrigins("https://alexandersnyderportfolio.com", "http://localhost:3000")
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials());
 });
 
-// Register Authorization service
+// Register services
 builder.Services.AddAuthorization();
-
-// Register controllers and HTTP client for API checks
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();
 
-// Configure MySQL connection using the connection string from environment variables or .env file
+// Configure MySQL connection
 var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
 if (string.IsNullOrEmpty(connectionString))
 {
@@ -51,7 +36,7 @@ if (string.IsNullOrEmpty(connectionString))
 builder.Services.AddDbContext<FlightPalContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-// Add Swagger for API documentation
+// Add Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -62,13 +47,17 @@ builder.Logging.AddDebug();
 
 var app = builder.Build();
 
-// Enable logging
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 
+// Middleware for handling preflight OPTIONS requests
 app.Use(async (context, next) =>
 {
     if (context.Request.Method == "OPTIONS")
     {
+        context.Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:3000");
+        context.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        context.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        context.Response.Headers.Add("Access-Control-Allow-Credentials", "true");
         context.Response.StatusCode = 204; // No Content
         await context.Response.CompleteAsync();
     }
@@ -78,25 +67,21 @@ app.Use(async (context, next) =>
     }
 });
 
-// Configure the HTTP request pipeline
+
+// Enable Swagger if in Development
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
 
-    // Apply Development CORS Policy
-    app.UseCors("DevelopmentPolicy");
-}
-else
-{
-    // Apply Production CORS Policy
-    app.UseCors("ProductionPolicy");
-}
+// Apply unified CORS policy
+app.UseCors("AllowSpecificOrigins");
 
 // Enable Authorization middleware
 app.UseAuthorization();
 
-// Global error logging
+// Global error logging middleware
 app.Use(async (context, next) =>
 {
     try
@@ -110,7 +95,7 @@ app.Use(async (context, next) =>
     }
 });
 
-// Map your controllers
+// Map controllers
 app.MapControllers();
 
 app.Run();
