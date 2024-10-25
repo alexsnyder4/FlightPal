@@ -17,11 +17,22 @@ if (environment == "Development")
 // Add CORS (Cross-Origin Resource Sharing) services to allow front-end requests
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigins",
-        policy => policy.WithOrigins("https://alexandersnyderportfolio.com")
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowCredentials());
+    if (environment == "Development")
+    {
+        options.AddPolicy("DevelopmentPolicy", policy =>
+            policy.WithOrigins("http://localhost:3000")  // Development origin
+                  .AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .AllowCredentials());
+    }
+    else
+    {
+        options.AddPolicy("ProductionPolicy", policy =>
+            policy.WithOrigins("https://alexandersnyderportfolio.com")  // Production origin
+                  .AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .AllowCredentials());
+    }
 });
 
 // Register Authorization service
@@ -59,6 +70,14 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    // Apply Development CORS Policy
+    app.UseCors("DevelopmentPolicy");
+}
+else
+{
+    // Apply Production CORS Policy
+    app.UseCors("ProductionPolicy");
 }
 
 app.UseSwagger();
