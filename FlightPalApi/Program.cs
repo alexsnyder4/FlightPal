@@ -65,6 +65,19 @@ var app = builder.Build();
 // Enable logging
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 
+app.Use(async (context, next) =>
+{
+    if (context.Request.Method == "OPTIONS")
+    {
+        context.Response.StatusCode = 204; // No Content
+        await context.Response.CompleteAsync();
+    }
+    else
+    {
+        await next();
+    }
+});
+
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
