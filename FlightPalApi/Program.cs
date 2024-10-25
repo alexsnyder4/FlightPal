@@ -80,12 +80,6 @@ else
     app.UseCors("ProductionPolicy");
 }
 
-app.UseSwagger();
-app.UseSwaggerUI();
-
-// Enable CORS policy for cross-origin requests
-app.UseCors("AllowSpecificOrigins");
-
 // Enable Authorization middleware
 app.UseAuthorization();
 
