@@ -1,33 +1,29 @@
 using Microsoft.EntityFrameworkCore;
 using FlightPalApi.Models;
 using DotNetEnv;
+using System.Collections.Generic;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Determine the environment
-string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+Env.Load(".env.development");
 
-if (environment == "Development")
-{
-    Env.Load(".env.development");
-}
+// Define allowed origins using a HashSet for efficient lookup
+var allowedOrigins = new HashSet<string> { "https://alexandersnyderportfolio.com", "http://localhost:3000" };
 
-// Add CORS policy for specific origins
+// Add CORS policy to dynamically allow specific origins
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigins", policy =>
-        policy.WithOrigins("https://alexandersnyderportfolio.com", "http://localhost:3000")
+        policy.SetIsOriginAllowed(origin => allowedOrigins.Contains(origin)) // Allow only listed origins
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials());
 });
 
-// Register services
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();
 
-// Configure MySQL connection
 var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
 if (string.IsNullOrEmpty(connectionString))
 {
@@ -36,11 +32,9 @@ if (string.IsNullOrEmpty(connectionString))
 builder.Services.AddDbContext<FlightPalContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-// Add Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configure logging
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
@@ -54,10 +48,14 @@ app.Use(async (context, next) =>
 {
     if (context.Request.Method == "OPTIONS")
     {
-        context.Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:3000");
-        context.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        context.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Authorization");
-        context.Response.Headers.Add("Access-Control-Allow-Credentials", "true");
+        var origin = context.Request.Headers["Origin"].ToString();
+        if (allowedOrigins.Contains(origin))
+        {
+            context.Response.Headers.Add("Access-Control-Allow-Origin", origin);
+            context.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+            context.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            context.Response.Headers.Add("Access-Control-Allow-Credentials", "true");
+        }
         context.Response.StatusCode = 204; // No Content
         await context.Response.CompleteAsync();
     }
@@ -67,21 +65,17 @@ app.Use(async (context, next) =>
     }
 });
 
+// Apply the CORS policy globally
+app.UseCors("AllowSpecificOrigins");
 
-// Enable Swagger if in Development
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// Apply unified CORS policy
-app.UseCors("AllowSpecificOrigins");
-
-// Enable Authorization middleware
 app.UseAuthorization();
 
-// Global error logging middleware
 app.Use(async (context, next) =>
 {
     try
@@ -95,7 +89,6 @@ app.Use(async (context, next) =>
     }
 });
 
-// Map controllers
 app.MapControllers();
 
 app.Run();

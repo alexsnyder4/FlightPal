@@ -36,10 +36,12 @@
 /* Modifier class for specific cards */
 .flights-card {
     background-color: #f0f8ff;
+    overflow-y: auto;
 }
 
 .aircraftreqs-card {
     background-color: #ffe4e1;
+    overflow-y: auto;
 }
 
 .edit-card {
@@ -49,7 +51,7 @@
 
 .weather-card {
     background-color: #ffe4e1;
-
+    overflow-y: auto;
   }
 
 /* Utility classes for additional tuning */
