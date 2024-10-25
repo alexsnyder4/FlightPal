@@ -10,7 +10,7 @@ string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"
 if (environment == "Development")
 {
     // Load .env file for development mode
-    Env.Load(".env"); // Adjust the path if your .env file is elsewhere
+    Env.Load(".env.development"); // Adjust the path if your .env file is elsewhere
 }
 
 // Add services to the container
