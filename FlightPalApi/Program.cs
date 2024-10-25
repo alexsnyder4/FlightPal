@@ -1,67 +1,76 @@
 using Microsoft.EntityFrameworkCore;
 using FlightPalApi.Models;
-using DotNetEnv;
+using DotNetEnv; // You need this for loading .env files
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Load environment variables from .env file
-
+// Determine the environment
 string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+
 if (environment == "Development")
 {
-    DotNetEnv.Env.Load(".env.development");
-}
-else
-{
-    DotNetEnv.Env.Load(".env.production");
+    // Load .env file for development mode
+    Env.Load(".env"); // Adjust the path if your .env file is elsewhere
 }
 
-
-// Add services to the container.
-// CORS (Cross-Origin Resource Sharing) services to allow front end requests
+// Add services to the container
+// Add CORS (Cross-Origin Resource Sharing) services to allow front-end requests
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigins",
-        builder => builder.WithOrigins("https://alexandersnyderportfolio.com") 
-                          .AllowAnyMethod()
-                          .AllowAnyHeader()
-                          .AllowCredentials());
+        policy => policy.WithOrigins("https://alexandersnyderportfolio.com")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
 });
-
 
 // Register Authorization service
 builder.Services.AddAuthorization();
 
+// Register controllers and HTTP client for API checks
 builder.Services.AddControllers();
+builder.Services.AddHttpClient();
 
-// Configure MySQL connection
+// Configure MySQL connection using the connection string from environment variables or .env file
 var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new InvalidOperationException("Database connection string is missing.");
+}
 builder.Services.AddDbContext<FlightPalContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
+// Add Swagger for API documentation
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configure Logging
-builder.Logging.ClearProviders(); // Remove default providers if needed
-builder.Logging.AddConsole(); // Add Console logging
-builder.Logging.AddDebug(); // Add Debug logging
+// Configure logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
 
 var app = builder.Build();
+
 // Enable logging
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
-app.UseCors("AllowSpecificOrigins");
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.UseSwagger();
-    app.UseSwaggerUI();
+app.UseSwaggerUI();
+
+// Enable CORS policy for cross-origin requests
+app.UseCors("AllowSpecificOrigins");
+
 // Enable Authorization middleware
 app.UseAuthorization();
+
+// Global error logging
 app.Use(async (context, next) =>
 {
     try
@@ -71,9 +80,11 @@ app.Use(async (context, next) =>
     catch (Exception ex)
     {
         logger.LogError(ex, "An error occurred while processing the request.");
-        throw; // Re-throw the error so it's handled as usual
+        throw;
     }
 });
+
+// Map your controllers
 app.MapControllers();
 
 app.Run();
