@@ -16,7 +16,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background-image: url('E:\DevProjects\FlightPal\flightpal-frontend\public\dashboard-background.png');
+  background-image: url('../../../public/dashboard-background.png');
   color: var(--text-color);
   /* To cover the entire screen */
   background-size: 100% 100%;
