@@ -17,7 +17,7 @@
     display:flex;
     justify-content: space-between; /* Distributes space between left and right columns */
     align-items: center; /* Vertically centers both columns */
-    background-color: #f0f8ff;
+    background-color: #ffffff;
 }
 /* Left side: Text content (greeting, etc.) */
 .userinfo-card .user-info-text {
@@ -35,22 +35,23 @@
 
 /* Modifier class for specific cards */
 .flights-card {
-    background-color: #f0f8ff;
+    background-color:#ffffff;
     overflow-y: auto;
 }
 
 .aircraftreqs-card {
-    background-color: #ffe4e1;
+    background-color: #ffffff;
     overflow-y: auto;
 }
 
 .edit-card {
-    background-color: #ffe4e1;
+    margin-top: 4%;
+    background-color: #8ECAE6;
     width:400px;
 }
 
 .weather-card {
-    background-color: #ffe4e1;
+    background-color: #ffffff;
     overflow-y: auto;
   }
 

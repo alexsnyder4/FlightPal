@@ -28,8 +28,9 @@ const Login = () => {
   return (
     <div className="login-container-wrapper"> 
       <div className = "login-container">
+        <h1>FlightPal</h1>
         <img src='LogoPropellor.webp' alt='Site Logo' className='login-logo'/>
-        <h1>Log In</h1>
+        <h2>Log In</h2>
         <form onSubmit={handleSubmit}>
           <input                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
             type="email"

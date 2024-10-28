@@ -11,9 +11,7 @@ function App() {
     <EventProvider>
       <Router>
         <div className="App-container">
-          <header className="App-header">
-            <h1>FlightPal</h1>
-          </header>
+
           <Routes>
             <Route path="/" element={<Login />} /> {/* Default route */}
             <Route path="/login" element={<Login />} />

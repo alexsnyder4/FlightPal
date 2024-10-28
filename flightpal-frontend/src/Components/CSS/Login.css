@@ -1,8 +1,8 @@
 /* Reuseable Variables */
 :root {
-  --primary-color: #4682B4;
-  --secondary-color: #D3D3D3;
-  --background-color: #F5F5F5;
+  --primary-color: rgb(16, 69, 127);
+  --secondary-color: #8ECAE6;
+  --background-color: #ffffff;
   --button-color: #1E3A5F;
   --text-color: #333333;
   --button-text-color: #F5F5F5;
@@ -16,10 +16,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background-image: linear-gradient(var(--background-color), var(--secondary-color));
+  background-image: url('E:\DevProjects\FlightPal\flightpal-frontend\public\dashboard-background.png');
   color: var(--text-color);
   /* To cover the entire screen */
-  background-size: cover;
+  background-size: 100% 100%;
 
   /* Prevent background from repeating */
   background-repeat: no-repeat;
@@ -36,23 +36,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-.App-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
 
-.App-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--primary-color);
-  padding: 20px;
-  margin-bottom: 20px;
-  color: var(--text-color);
-  text-align: center;
-  max-height: 40px;
-}
+
 
 .footer {
   display: block;
@@ -86,9 +71,8 @@ h6 {
   align-items: center;
   background-color: var(--secondary-color);
   border-radius: 15px;
-  padding: 75px;
+  padding: 50px 75px;
   margin: 20px;
-  margin-bottom: 300px;
   width: 100%;
   max-width: 600px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -151,8 +135,8 @@ h6 {
 }
 
 .layout-container {
-  width: 100%; /* Let it take full available width */
-  max-width: 2000px; /* Or set a maximum width for the container */
+  width: 100%; /* full available width */
+  max-width: 2000px; 
   display: flex;
   justify-content: center; /* Center the grid layout inside the container */
 }
@@ -164,7 +148,11 @@ h6 {
 }
 .title {
   display: flex;
+  font-size: xx-large;
   justify-content: center;
+  color: #F5F5F5;
+  margin-top: 2%;
+  margin-bottom: 4%;
 }
 
 .userInfo-container,
@@ -197,7 +185,7 @@ h6 {
   top: 0;
   left: 0;
   height: 100%;
-  background-color: rgba(98, 174, 255, 0.48);
+  background-color:var(--secondary-color);
   /* Semi-transparent blue bar */
   transition: width 3.5s ease;
   /* Smooth animation */
