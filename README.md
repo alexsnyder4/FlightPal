@@ -17,22 +17,29 @@ Future Improvements
 Features
 User Registration & Authentication: 
   Secure user sign-up and login functionality.
+  
 Add Flights: 
   Users can add flight details, including aircraft, duration, start and stop locations, date, and crew member information.
+  
 Flight Management:
   View a list of all flights with details in a sortable and filterable table.
   Toggle flight deletion with a confirmation modal for secure deletion.
+  
 Crew Management:
   Add, update, and remove crew members associated with each flight.
   Ensure accurate crew details per flight record.
+  
 Aircraft Management:
   Add, view, and manage aircraft data, including aircraft types, roles, and logged flight hours.
   Option to add aircraft during registration and within the user dashboard.
+  
 User Home Layout Customization: 
   Users can customize the layout and arrangement of cards on their dashboard, and the state is persisted across sessions.
+  
 Weather Data Integration:
   View real-time and forecasted weather data for specific locations, including a radar map and a weekly forecast.
   Integrated OpenWeather API for up-to-date information.
+  
 Responsive Design: 
   Mobile-friendly and responsive UI built with modern CSS (Flexbox and Grid) for optimal viewing on different devices.
 
