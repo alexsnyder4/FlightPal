@@ -28,13 +28,20 @@ export const getWeeklyForecast = (lat, lon, apiKey) => {
   });
 };
 
-export const getUsers = () => api.get('/Users');
+//Authorization Management
 export const loginUser = (credentials) => api.post('/Auth/login', credentials);
 export const registerUser = (userData) => api.post('/Auth/register', userData);
+
+// User 
+export const getUsers = () => api.get('/Users');
 export const getUserById = (userId) => api.get(`/Users/${userId}`); // Added this function for fetching user by ID
+
+// Flights
 export const getFlightsByUserId = (userId) => api.get(`/Flights/User/${userId}`);
 export const addFlight = (flightInfo) => api.post('/Flights', flightInfo); // Adds flight to user
 export const deleteFlightByFlightId = (flightId) => api.delete(`/Flights/${flightId}`);
+
+// Aircraft
 export const checkAircraftExists = (aircraftModel) => {                   // Checks Aircraft table for Model 
   return api.get(`/Aircraft/model`, { params: { modelName: aircraftModel } });
 };
