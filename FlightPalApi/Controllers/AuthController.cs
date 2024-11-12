@@ -9,22 +9,23 @@ namespace FlightPalApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly FlightPalContext _context;
-
-        public AuthController(FlightPalContext context)
+        private readonly AuthService _authService;
+        public AuthController(FlightPalContext context, AuthService authService)
         {
             _context = context;
+            _authService = authService;
         }
 
         [HttpPost("register")]
         public async Task<ActionResult<User>> Register(RegisterDTO registerDTO)
         {
-
+            var hashedPassword = _authService.HashPassword(registerDTO.Password);
             var user = new User
             {
                 FName = registerDTO.FName,
                 LName = registerDTO.LName,
                 Email = registerDTO.Email,
-                Password = registerDTO.Password,
+                Password = hashedPassword,
             };
 
             _context.Users.Add(user);
@@ -54,9 +55,9 @@ namespace FlightPalApi.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginDTO login)
         {
-            var user = _context.Users.SingleOrDefault(u => u.Email == login.Email && u.Password == login.Password);
+            var user = _context.Users.SingleOrDefault(u => u.Email == login.Email);
 
-            if (user == null)
+            if (user == null || !_authService.VerifyPassword(login.Password, user.Password))
             {
                 return Unauthorized("Invalid credentials");
             }
