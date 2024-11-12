@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 public class AuthService
 {
-    public string HashPassword(string password)
+    public virtual string HashPassword(string password)
     {
         byte[] salt = new byte[128 / 8];
         using (var rng = RandomNumberGenerator.Create())
@@ -22,7 +22,7 @@ public class AuthService
         return $"{Convert.ToBase64String(salt)}:{hashed}";
     }
 
-    public bool VerifyPassword(string password, string storedHash)
+    public virtual bool VerifyPassword(string password, string storedHash)
     {
         var parts = storedHash.Split(':');
         byte[] salt = Convert.FromBase64String(parts[0]);

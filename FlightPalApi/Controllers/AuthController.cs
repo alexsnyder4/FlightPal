@@ -19,6 +19,18 @@ namespace FlightPalApi.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<User>> Register(RegisterDTO registerDTO)
         {
+            // Validate inputs
+            if (!InputValidator.IsValidEmail(registerDTO.Email))
+                return BadRequest("Invalid email format.");
+
+            if (!InputValidator.IsValidPassword(registerDTO.Password))
+                return BadRequest("Password must be at least 8 characters, include uppercase, lowercase, a number, and a special character.");
+
+            var existingUser = _context.Users.SingleOrDefault(u => u.Email == registerDTO.Email);
+
+            if (existingUser != null)
+                return Conflict("A user with this email already exists.");
+            
             var hashedPassword = _authService.HashPassword(registerDTO.Password);
             var user = new User
             {
@@ -55,6 +67,13 @@ namespace FlightPalApi.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginDTO login)
         {
+            // Validate inputs
+            if (string.IsNullOrWhiteSpace(login.Email) || string.IsNullOrWhiteSpace(login.Password))
+                return BadRequest("Email and password are required.");
+
+            if (!InputValidator.IsValidEmail(login.Email))
+                return BadRequest("Invalid email format.");
+
             var user = _context.Users.SingleOrDefault(u => u.Email == login.Email);
 
             if (user == null || !_authService.VerifyPassword(login.Password, user.Password))
