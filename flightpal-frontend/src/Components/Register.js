@@ -19,8 +19,7 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) 
-    {
+    if (password !== confirmPassword) {
       setError('Passwords do not match.');
       return;
     }
@@ -57,49 +56,52 @@ const Register = () => {
 
 
   return (
-    <div className = "register-container">
-      <form onSubmit={handleRegister}>
-        <input
-          type="text"
-          value={fName}
-          onChange={(e) => setFName(e.target.value)}
-          placeholder="First Name"
-          required
-        />
-        <input
-          type="text"
-          value={lName}
-          onChange={(e) => setLName(e.target.value)}
-          placeholder="Last Name"
-          required
-        />
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-          required
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          required
-        />
-        <input
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          placeholder="Confirm Password"
-          required
-        />
-        {error && <p>{error}</p>}
-        <button className = "button" type="submit">Register</button>
-        <button className="button" onClick={handleBack}>Back</button>
-      </form>
-    
-      
+    <div className="login-container-wrapper">
+      <div className="login-container">
+        <h1>FlightPal</h1>
+        <img src='LogoPropellor.webp' alt='Site Logo' className='login-logo' />
+        <h2>Register</h2>
+        <form onSubmit={handleRegister}>
+          <input
+            type="text"
+            value={fName}
+            onChange={(e) => setFName(e.target.value)}
+            placeholder="First Name"
+            required
+          />
+          <input
+            type="text"
+            value={lName}
+            onChange={(e) => setLName(e.target.value)}
+            placeholder="Last Name"
+            required
+          />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            required
+          />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            required
+          />
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Confirm Password"
+            required
+          />
+          {error && <p>{error}</p>}
+          <button className="button" type="submit">Register</button>
+          <button className="button" onClick={handleBack}>Back</button>
+        </form>
+      </div>
     </div>
   );
 };
