@@ -1,10 +1,7 @@
-
 import React, { useState } from 'react';
 import { registerUser } from '../Services/api';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './CSS/Login.css';
-
-
 
 const Register = () => {
   const [fName, setFName] = useState('');
@@ -15,7 +12,6 @@ const Register = () => {
   const [error, setError] = useState(null);
 
   const navigate = useNavigate(); // Initialize useNavigate
-
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -29,22 +25,15 @@ const Register = () => {
       console.log('Registration successful');
       alert('Registration Successful!');
       navigate(`/login`); // Redirect to login page
-
     } catch (err) {
       setError('Registration failed.');
     }
   };
 
-  /*
-  const addAircraft = (aircraft) => {
-    setAircraftList([...aircraftList, aircraft]);
-  };
-  */
-
   const handleBack = () => {
     clearForm();
     navigate('/login');
-  }
+  };
 
   const clearForm = () => {
     setFName('');
@@ -52,14 +41,13 @@ const Register = () => {
     setEmail('');
     setPassword('');
     setConfirmPassword('');
-  }
-
+  };
 
   return (
     <div className="login-container-wrapper">
       <div className="login-container">
         <h1>FlightPal</h1>
-        <img src='LogoPropellor.webp' alt='Site Logo' className='login-logo' />
+        <img src="LogoPropellor.webp" alt="Site Logo" className="login-logo" />
         <h2>Register</h2>
         <form onSubmit={handleRegister}>
           <input
@@ -98,11 +86,15 @@ const Register = () => {
             required
           />
           {error && <p>{error}</p>}
-          <button className="button" type="submit">Register</button>
-          <button className="button" onClick={handleBack}>Back</button>
+          <button className="button" type="submit">
+            Register
+          </button>
+          <button className="button" type="button" onClick={handleBack}>
+            Back
+          </button>
         </form>
       </div>
-    </div>
+    </div> 
   );
 };
 
