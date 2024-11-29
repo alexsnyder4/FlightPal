@@ -9,22 +9,35 @@ namespace FlightPalApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly FlightPalContext _context;
-
-        public AuthController(FlightPalContext context)
+        private readonly AuthService _authService;
+        public AuthController(FlightPalContext context, AuthService authService)
         {
             _context = context;
+            _authService = authService;
         }
 
         [HttpPost("register")]
         public async Task<ActionResult<User>> Register(RegisterDTO registerDTO)
         {
+            // Validate inputs
+            if (!InputValidator.IsValidEmail(registerDTO.Email))
+                return BadRequest("Invalid email format.");
 
+            if (!InputValidator.IsValidPassword(registerDTO.Password))
+                return BadRequest("Password must be at least 8 characters, include uppercase, lowercase, a number, and a special character.");
+
+            var existingUser = _context.Users.SingleOrDefault(u => u.Email == registerDTO.Email);
+
+            if (existingUser != null)
+                return Conflict("A user with this email already exists.");
+            
+            var hashedPassword = _authService.HashPassword(registerDTO.Password);
             var user = new User
             {
                 FName = registerDTO.FName,
                 LName = registerDTO.LName,
                 Email = registerDTO.Email,
-                Password = registerDTO.Password,
+                Password = hashedPassword,
             };
 
             _context.Users.Add(user);
@@ -54,9 +67,16 @@ namespace FlightPalApi.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginDTO login)
         {
-            var user = _context.Users.SingleOrDefault(u => u.Email == login.Email && u.Password == login.Password);
+            // Validate inputs
+            if (string.IsNullOrWhiteSpace(login.Email) || string.IsNullOrWhiteSpace(login.Password))
+                return BadRequest("Email and password are required.");
 
-            if (user == null)
+            if (!InputValidator.IsValidEmail(login.Email))
+                return BadRequest("Invalid email format.");
+
+            var user = _context.Users.SingleOrDefault(u => u.Email == login.Email);
+
+            if (user == null || !_authService.VerifyPassword(login.Password, user.Password))
             {
                 return Unauthorized("Invalid credentials");
             }

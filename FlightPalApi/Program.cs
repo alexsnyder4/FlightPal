@@ -19,7 +19,7 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader()
               .AllowCredentials());
 });
-
+builder.Services.AddScoped<AuthService>(); // Register AuthService
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();

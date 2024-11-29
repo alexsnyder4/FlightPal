@@ -29,28 +29,11 @@ body {
 
   /* Center the background image */
   background-position: center;
-
-
 }
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-
 
 .footer {
   display: block;
   background-color: black;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: bold;
 }
 
 /* Wrapper for centering the login-container */
@@ -58,10 +41,10 @@ h6 {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   /* Full height of the viewport */
-  width: 100vw;
+  height: 100vh;
   /* Full width of the viewport */
+  width: 100vw;
 }
 
 /* Style for the login form container */
@@ -71,7 +54,7 @@ h6 {
   align-items: center;
   background-color: var(--secondary-color);
   border-radius: 15px;
-  padding: 50px 75px;
+  padding: 50px 15px;
   margin: 20px;
   width: 100%;
   max-width: 600px;
@@ -104,28 +87,6 @@ h6 {
   margin: 10px 0 0 8px;
 }
 
-
-.register-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.register-container form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 200px;
-}
-
-.register-container input {
-  max-width: 400px;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
 .userHome-container {
   display: flex;
   flex-direction: column;
