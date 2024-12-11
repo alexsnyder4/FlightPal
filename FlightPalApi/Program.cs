@@ -88,6 +88,42 @@ var app = builder.Build();
 
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 
+// Password update script only run once
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<FlightPalContext>();
+    var authService = scope.ServiceProvider.GetRequiredService<AuthService>();
+
+    // Find users with plaintext passwords
+    var usersWithPlaintextPasswords = context.Users
+        .Where(u => !u.Password.Contains(":"))
+        .ToList();
+
+    foreach (var user in usersWithPlaintextPasswords)
+    {
+        try
+        {
+            Console.WriteLine($"Hashing password for user: {user.Email}");
+            user.Password = authService.HashPassword(user.Password); // Hash the plaintext password
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating password for user {user.Email}: {ex.Message}");
+        }
+    }
+
+    try
+    {
+        // Save changes
+        context.SaveChanges();
+        Console.WriteLine("Password update script completed successfully.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error saving changes to the database: {ex.Message}");
+    }
+}
+
 // Middleware for handling preflight OPTIONS requests
 app.Use(async (context, next) =>
 {
