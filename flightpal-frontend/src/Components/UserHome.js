@@ -6,6 +6,7 @@ import EditCards from './Cards/EditCards';
 import FlightsCard from './Cards/FlightsCard';
 import UserInfoCard from './Cards/UserInfoCard';
 import WeatherCard from './Cards/WeatherCard';
+import FuelBurnCard from './Cards/FuelBurnCard';
 import CardsList from './CardsList';
 import ChartCard from './Cards/ChartCard';
 import GridLayout from 'react-grid-layout';
@@ -17,7 +18,7 @@ import 'react-resizable/css/styles.css';
 const UserHome = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
-  const [layout, setLayout] = useState(null);
+  const [layout, setLayout] = useState([]);
   const [activeCards, setActiveCards] = useState([]);
   const [activeResize, setActiveResize] = useState(false);
   const [activeDraggable, setActiveDraggable] = useState(false);
@@ -34,7 +35,8 @@ const UserHome = () => {
         { i: 'aircraftRequirements', x: 1, y: 0, w: 1, h: 3 },
         { i: 'flights', x: 2, y: 0, w: 1, h: 3 },
         { i: 'weather', x: 0, y: 2, w: 1, h: 4 },
-        { i: 'chart', x: 1, y: 2, w: 1, h: 3 },
+        { i: 'chart', x: 1, y: 2, w: 2, h: 3 },
+        { i: 'fuelBurn', x: 2, y: 2, w: 2, h: 2 },
       ];
       setLayout(defaultLayout);
     }
@@ -48,12 +50,14 @@ const UserHome = () => {
     flights: { w: 3, h: 3, minW: 3, minH: 3, maxW: 6, maxH: 6 },
     weather: { w: 3, h: 3, minW: 1, minH: 3, maxW: 6, maxH: 6 },
     chart: { w: 2, h: 3, minW: 1, minH: 3, maxW: 6, maxH: 6 },
+    fuelBurn: {w: 3, h: 3, minW: 1, minH: 3, maxW: 6, maxH: 6},
   };
 
   const toggleDraggable = () => setActiveDraggable(!activeDraggable);
   const toggleResize = () => setActiveResize(!activeResize);
 
   const addCard = (cardName) => {
+
     if (!activeCards.includes(cardName)) {
       const newActiveCards = [...activeCards, cardName];
       updateActiveCards(newActiveCards);
@@ -61,7 +65,8 @@ const UserHome = () => {
       const newCardLayout = {
         i: cardName,
         x: 0,
-        y: Infinity,
+        // Calculate the next available y position
+        y: layout.length > 0 ? Math.max(...layout.map((item) => item.y + item.h)) : 0, 
         ...cardSizeMap[cardName],
       };
 
@@ -121,6 +126,9 @@ const UserHome = () => {
             )}
             {activeCards.includes('chart') && (
               <div key="chart"><ChartCard userId={userId} /></div>
+            )}
+            {activeCards.includes('fuelBurn') && (
+              <div key="fuelBurn"><FuelBurnCard /></div>
             )}
           </GridLayout>
         </div>
