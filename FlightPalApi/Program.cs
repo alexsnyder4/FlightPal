@@ -88,6 +88,7 @@ var app = builder.Build();
 
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 
+/*
 // Password update script only run once
 using (var scope = app.Services.CreateScope())
 {
@@ -123,6 +124,7 @@ using (var scope = app.Services.CreateScope())
         Console.WriteLine($"Error saving changes to the database: {ex.Message}");
     }
 }
+*/
 
 // Middleware for handling preflight OPTIONS requests
 app.Use(async (context, next) =>
