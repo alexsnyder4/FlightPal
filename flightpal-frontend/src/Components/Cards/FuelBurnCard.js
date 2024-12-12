@@ -14,6 +14,11 @@ const FuelBurnCard = () => {
       alert("Please ensure all inputs are filled correctly.");
       return;
     }
+    if (initialFuel <= currentFuel)
+    {
+      alert("Current Fuel must be less than Initial Fuel");
+      return;
+    }
 
     // Convert times to Date objects
     const startTime = new Date(`1970-01-01T${initialTime}:00Z`);
@@ -29,7 +34,7 @@ const FuelBurnCard = () => {
       interval: `${lastTime.toTimeString().slice(0, 5)} - ${endTime.toTimeString().slice(0, 5)}`,
       initialFuel,
       currentFuel,
-      burnRate: burnRate.toFixed(2),
+      burnRate: burnRate.toFixed(0),
     };
 
     setBurnRates([...burnRates, newBurnRate]);
@@ -40,13 +45,26 @@ const FuelBurnCard = () => {
   };
 
   const startTimer = () => {
-    if (!initialTime) {
-      alert("Please enter a valid initial time.");
+    if (!initialFuel) {
+      alert("Please enter an Initial Fuel amount.");
       return;
     }
-
+    if (!initialTime) {
+      const currentTime = new Date();
+      const formattedTime = currentTime.toISOString().slice(11, 16); // Format HH:MM
+      setInitialTime(formattedTime); // If no user set initial time, use current time
+    }
     setLastTime(new Date()); // Start tracking the last time
     setIsRunning(true);
+  };
+
+  // Clears input fields and sets isRunning to false
+  const stopTimer = () => {
+    setInitialTime("");
+    setInitialFuel("");
+    setCurrentFuel("");
+    setLastTime(""); // Start tracking the last time
+    setIsRunning(false);
   };
 
   return (
@@ -56,18 +74,12 @@ const FuelBurnCard = () => {
         <label>Initial Fuel (gallons): </label>
         <input
           type="number"
+          min="0"
           value={initialFuel}
           onChange={(e) => setInitialFuel(Number(e.target.value))}
         />
       </div>
-      <div>
-        <label>Current Fuel (gallons): </label>
-        <input
-          type="number"
-          value={currentFuel}
-          onChange={(e) => setCurrentFuel(Number(e.target.value))}
-        />
-      </div>
+
       <div>
         <label>Initial Time (HH:MM): </label>
         <input
@@ -77,14 +89,31 @@ const FuelBurnCard = () => {
         />
       </div>
       <div>
-        <button className="button" onClick={startTimer} disabled={isRunning}>
-          Start Timer
+        <button className="button"
+          onClick={isRunning ? stopTimer : startTimer}
+        >
+          {isRunning ? 'Stop Timer' : 'Start Timer'}
         </button>
       </div>
       <div>
-        <button className="button"onClick={calculateFuel} disabled={!isRunning}>
+        <label>Current Fuel (gallons): </label>
+        <input
+          type="number"
+          min="0"
+          value={currentFuel}
+          onChange={(e) => setCurrentFuel(Number(e.target.value))}
+        />
+      </div>
+      <div>
+        <button className="button" onClick={calculateFuel} disabled={!isRunning}>
           Calculate (Lap)
         </button>
+      </div>
+      <div>
+        <p> Calculated burn rate: {burnRates && burnRates.length > 0
+          ? `${burnRates[0].burnRate} Gallons/Hour`
+          : "No data available"}
+        </p>
       </div>
       <div>
         <h3>Lap Results:</h3>
