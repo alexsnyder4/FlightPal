@@ -24,11 +24,56 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();
 
-var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+string primaryConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+string fallbackConnectionString = Environment.GetEnvironmentVariable("LOCAL_CONNECTION_STRING");
+
+string? connectionString = null;
+
+// Try connecting to the primary connection string
+try
+{
+    using (var tempContext = new FlightPalContext(new DbContextOptionsBuilder<FlightPalContext>()
+        .UseMySql(primaryConnectionString, ServerVersion.AutoDetect(primaryConnectionString)).Options))
+    {
+        // Attempt to connect to the database
+        tempContext.Database.CanConnect();
+        connectionString = primaryConnectionString;
+    }
+}
+catch
+{
+    // If the primary connection string fails, use the fallback
+    if (!string.IsNullOrEmpty(fallbackConnectionString))
+    {
+        try
+        {
+            using (var tempContext = new FlightPalContext(new DbContextOptionsBuilder<FlightPalContext>()
+                .UseMySql(fallbackConnectionString, ServerVersion.AutoDetect(fallbackConnectionString)).Options))
+            {
+                // Attempt to connect to the fallback database
+                tempContext.Database.CanConnect();
+                connectionString = fallbackConnectionString;
+            }
+        }
+        catch
+        {
+            // Both connection strings failed
+            throw new InvalidOperationException("Could not connect to any database.");
+        }
+    }
+    else
+    {
+        // No fallback connection string provided
+        throw new InvalidOperationException("Primary database connection failed, and no fallback connection string is provided.");
+    }
+}
+
 if (string.IsNullOrEmpty(connectionString))
 {
-    throw new InvalidOperationException("Database connection string is missing.");
+    throw new InvalidOperationException("No valid database connection string is available.");
 }
+Console.WriteLine($"Connecting to database with connection string: {connectionString}");
+
 builder.Services.AddDbContext<FlightPalContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
@@ -42,6 +87,44 @@ builder.Logging.AddDebug();
 var app = builder.Build();
 
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
+
+/*
+// Password update script only run once
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<FlightPalContext>();
+    var authService = scope.ServiceProvider.GetRequiredService<AuthService>();
+
+    // Find users with plaintext passwords
+    var usersWithPlaintextPasswords = context.Users
+        .Where(u => !u.Password.Contains(":"))
+        .ToList();
+
+    foreach (var user in usersWithPlaintextPasswords)
+    {
+        try
+        {
+            Console.WriteLine($"Hashing password for user: {user.Email}");
+            user.Password = authService.HashPassword(user.Password); // Hash the plaintext password
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating password for user {user.Email}: {ex.Message}");
+        }
+    }
+
+    try
+    {
+        // Save changes
+        context.SaveChanges();
+        Console.WriteLine("Password update script completed successfully.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error saving changes to the database: {ex.Message}");
+    }
+}
+*/
 
 // Middleware for handling preflight OPTIONS requests
 app.Use(async (context, next) =>

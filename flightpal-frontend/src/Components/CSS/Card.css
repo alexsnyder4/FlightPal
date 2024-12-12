@@ -55,6 +55,12 @@
     overflow-y: auto;
   }
 
+.fuel-burn-card {
+    background-color: #ffffff;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
 /* Utility classes for additional tuning */
 .card--bordered {
     border: 2px solid #ccc;

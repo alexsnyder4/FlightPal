@@ -1,35 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { UserDataProvider } from './UserDataContext'; // Import the UserDataProvider
 import AircraftRequirementsCard from './Cards/AircraftRequirementsCard';
 import EditCards from './Cards/EditCards';
 import FlightsCard from './Cards/FlightsCard';
 import UserInfoCard from './Cards/UserInfoCard';
 import WeatherCard from './Cards/WeatherCard';
+import FuelBurnCard from './Cards/FuelBurnCard';
 import CardsList from './CardsList';
 import ChartCard from './Cards/ChartCard';
 import GridLayout from 'react-grid-layout';
 import './CSS/Login.css';
 import './CSS/Card.css';
-import 'react-grid-layout/css/styles.css';  // Required for react-grid-layout
-import 'react-resizable/css/styles.css';    // Required for resizing
-
-
+import 'react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
 
 const UserHome = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
-  const [layout, setLayout] = useState(null);
+  const [layout, setLayout] = useState([]);
   const [activeCards, setActiveCards] = useState([]);
   const [activeResize, setActiveResize] = useState(false);
   const [activeDraggable, setActiveDraggable] = useState(false);
 
   useEffect(() => {
-    // Load layout and activeCards from local storage on mount
     const savedLayout = JSON.parse(localStorage.getItem(`userLayout-${userId}`));
     const savedActiveCards = JSON.parse(localStorage.getItem(`userActiveCards-${userId}`));
 
     if (savedLayout) {
-      console.log("Loaded layout from local storage:", savedLayout);
       setLayout(savedLayout);
     } else {
       const defaultLayout = [
@@ -37,13 +35,12 @@ const UserHome = () => {
         { i: 'aircraftRequirements', x: 1, y: 0, w: 1, h: 3 },
         { i: 'flights', x: 2, y: 0, w: 1, h: 3 },
         { i: 'weather', x: 0, y: 2, w: 1, h: 4 },
-        { i: 'chart', x: 1, y: 2, w: 1, h: 3 },
+        { i: 'chart', x: 1, y: 2, w: 2, h: 3 },
+        { i: 'fuelBurn', x: 2, y: 2, w: 2, h: 2 },
       ];
-      console.log("Setting default layout:", defaultLayout);
       setLayout(defaultLayout);
     }
 
-    // Set default active cards if none are saved
     setActiveCards(savedActiveCards || ['userInfo']);
   }, [userId]);
 
@@ -53,25 +50,26 @@ const UserHome = () => {
     flights: { w: 3, h: 3, minW: 3, minH: 3, maxW: 6, maxH: 6 },
     weather: { w: 3, h: 3, minW: 1, minH: 3, maxW: 6, maxH: 6 },
     chart: { w: 2, h: 3, minW: 1, minH: 3, maxW: 6, maxH: 6 },
+    fuelBurn: {w: 3, h: 3, minW: 1, minH: 3, maxW: 6, maxH: 6},
   };
 
   const toggleDraggable = () => setActiveDraggable(!activeDraggable);
   const toggleResize = () => setActiveResize(!activeResize);
 
   const addCard = (cardName) => {
+
     if (!activeCards.includes(cardName)) {
       const newActiveCards = [...activeCards, cardName];
-      updateActiveCards(newActiveCards);  // Save updated active cards
-  
-      // Define layout for the new card based on its type
+      updateActiveCards(newActiveCards);
+
       const newCardLayout = {
         i: cardName,
-        x: 0,  // Default column
-        y: Infinity,  // Automatically place in the next available row
-        ...cardSizeMap[cardName],  // Get dimensions from cardSizeMap
+        x: 0,
+        // Calculate the next available y position
+        y: layout.length > 0 ? Math.max(...layout.map((item) => item.y + item.h)) : 0, 
+        ...cardSizeMap[cardName],
       };
-  
-      // Update layout to include the new card layout
+
       const newLayout = [...layout, newCardLayout];
       setLayout(newLayout);
       localStorage.setItem(`userLayout-${userId}`, JSON.stringify(newLayout));
@@ -80,9 +78,8 @@ const UserHome = () => {
 
   const removeCard = (cardName) => {
     const newActiveCards = activeCards.filter(card => card !== cardName);
-    updateActiveCards(newActiveCards);  // Save updated active cards
-  
-    // Update layout to remove the layout for the card being removed
+    updateActiveCards(newActiveCards);
+
     const newLayout = layout.filter(item => item.i !== cardName);
     setLayout(newLayout);
     localStorage.setItem(`userLayout-${userId}`, JSON.stringify(newLayout));
@@ -90,10 +87,9 @@ const UserHome = () => {
 
   const updateActiveCards = (newActiveCards) => {
     setActiveCards(newActiveCards);
-    console.log("Active cards updated:", newActiveCards);  // Log current active cards
     localStorage.setItem(`userActiveCards-${userId}`, JSON.stringify(newActiveCards));
-    console.log("Saved active cards to local storage:", newActiveCards);
   };
+
   const onLayoutChange = (newLayout) => {
     setLayout(newLayout);
     localStorage.setItem(`userLayout-${userId}`, JSON.stringify(newLayout));
@@ -102,48 +98,53 @@ const UserHome = () => {
   const handleLogout = () => navigate('/login');
 
   return (
-    <div className='userHome-container'>
-      <h1 className='title'>User Home</h1>
-      <div className='layout-container'>
-        <GridLayout
-          className="layout"
-          layout={layout}
-          cols={10}
-          rowHeight={150}
-          width={2000}
-          onLayoutChange={onLayoutChange}
-          isResizable={activeResize}
-          isDraggable={activeDraggable}
-        >
-          {activeCards.includes('userInfo') && (
-            <div key="userInfo"><UserInfoCard userId={userId} /></div>
-          )}
-          {activeCards.includes('aircraftRequirements') && (
-            <div key="aircraftRequirements"><AircraftRequirementsCard userId={userId} /></div>
-          )}
-          {activeCards.includes('flights') && (
-            <div key="flights"><FlightsCard userId={userId} /></div>
-          )}
-          {activeCards.includes('weather') && (
-            <div key="weather"><WeatherCard /></div>
-          )}
-          {activeCards.includes('chart') && (
-            <div key="chart"><ChartCard userId={userId} /></div>
-          )}
-        </GridLayout>
+    <UserDataProvider userId={userId}> {/* Wrap with UserDataProvider */}
+      <div className='userHome-container'>
+        <h1 className='title'>User Home</h1>
+        <div className='layout-container'>
+          <GridLayout
+            className="layout"
+            layout={layout}
+            cols={10}
+            rowHeight={150}
+            width={2000}
+            onLayoutChange={onLayoutChange}
+            isResizable={activeResize}
+            isDraggable={activeDraggable}
+          >
+            {activeCards.includes('userInfo') && (
+              <div key="userInfo"><UserInfoCard userId={userId} /></div>
+            )}
+            {activeCards.includes('aircraftRequirements') && (
+              <div key="aircraftRequirements"><AircraftRequirementsCard userId={userId} /></div>
+            )}
+            {activeCards.includes('flights') && (
+              <div key="flights"><FlightsCard userId={userId} /></div>
+            )}
+            {activeCards.includes('weather') && (
+              <div key="weather"><WeatherCard /></div>
+            )}
+            {activeCards.includes('chart') && (
+              <div key="chart"><ChartCard userId={userId} /></div>
+            )}
+            {activeCards.includes('fuelBurn') && (
+              <div key="fuelBurn"><FuelBurnCard /></div>
+            )}
+          </GridLayout>
+        </div>
+        <EditCards
+          CardsList={CardsList}
+          addCard={addCard}
+          removeCard={removeCard}
+          activeCards={activeCards}
+          toggleResize={toggleResize}
+          activeResize={activeResize}
+          toggleDraggable={toggleDraggable}
+          activeDraggable={activeDraggable}
+        />
+        <button className='logoutBtn' onClick={handleLogout}>Logout</button>
       </div>
-      <EditCards
-        CardsList={CardsList}
-        addCard={addCard}
-        removeCard={removeCard}
-        activeCards={activeCards}
-        toggleResize={toggleResize}
-        activeResize={activeResize}
-        toggleDraggable={toggleDraggable}
-        activeDraggable={activeDraggable}
-      />
-      <button className='logoutBtn' onClick={handleLogout}>Logout</button>
-    </div>
+    </UserDataProvider>
   );
 };
 
