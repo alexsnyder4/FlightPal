@@ -36,7 +36,7 @@ const UserHome = () => {
         { i: 'flights', x: 2, y: 0, w: 1, h: 3 },
         { i: 'weather', x: 0, y: 2, w: 1, h: 4 },
         { i: 'chart', x: 1, y: 2, w: 2, h: 3 },
-        { i: 'fuelBurn', x: 2, y: 2, w: 2, h: 2 },
+        { i: 'fuelBurn', x: 2, y: 2, w: 3, h: 2 },
       ];
       setLayout(defaultLayout);
     }
@@ -46,11 +46,11 @@ const UserHome = () => {
 
   const cardSizeMap = {
     userInfo: { w: 2, h: 1, minW: 2, minH: 1, maxW: 10, maxH: 3 },
-    aircraftRequirements: { w: 2, h: 3, minW: 1, minH: 3, maxW: 4, maxH: 4 },
+    aircraftRequirements: { w: 2, h: 3, minW: 2, minH: 2, maxW: 4, maxH: 4 },
     flights: { w: 3, h: 3, minW: 3, minH: 3, maxW: 6, maxH: 6 },
     weather: { w: 3, h: 3, minW: 1, minH: 3, maxW: 6, maxH: 6 },
     chart: { w: 2, h: 3, minW: 1, minH: 3, maxW: 6, maxH: 6 },
-    fuelBurn: {w: 3, h: 3, minW: 1, minH: 3, maxW: 6, maxH: 6},
+    fuelBurn: {w: 3, h: 3, minW: 2, minH: 2, maxW: 6, maxH: 6},
   };
 
   const toggleDraggable = () => setActiveDraggable(!activeDraggable);
