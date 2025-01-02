@@ -9,7 +9,6 @@
     box-sizing: border-box;  /* Ensure padding is included in width/height */
 }
 
-
 .card:hover {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
@@ -18,19 +17,7 @@
     justify-content: space-between; /* Distributes space between left and right columns */
     align-items: center; /* Vertically centers both columns */
     background-color: #ffffff;
-}
-/* Left side: Text content (greeting, etc.) */
-.userinfo-card .user-info-text {
-    flex: 1; /* Takes up available space */
-    display: flex;
-    flex-direction: column;
-}
-
-/* Right side: Profile picture button */
-.userinfo-card .profile-pic-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    position: relative;
 }
 
 /* Modifier class for specific cards */
@@ -80,6 +67,19 @@
 /* Grey out the card when selected */
 .greyed-out {
     opacity: 0.5;
+}
+/* Avatar Form Specific */
+.avatarFormContainer {
+    position: absolute;
+    top: 120%; /* Below the button */
+    left: 50%; /* Center horizontally relative to the button */
+    margin: 5px;
+}
+.profilepic {
+    width: 100px; /* Set the width of the circle */
+    height: 100px; /* Set the height of the circle */
+    border-radius: 50%; /* Make the image circular */
+    object-fit: cover; /* Ensures the image fills the circle without distortion */
 }
 
 /* Aircraft Form Specific */
@@ -188,3 +188,4 @@
   .map {
     height: 100%;
   }
+

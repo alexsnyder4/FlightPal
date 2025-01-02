@@ -32,6 +32,7 @@ string? connectionString = null;
 // Try connecting to the primary connection string
 try
 {
+    Console.WriteLine("Attempting to connect to primary database...");
     using (var tempContext = new FlightPalContext(new DbContextOptionsBuilder<FlightPalContext>()
         .UseMySql(primaryConnectionString, ServerVersion.AutoDetect(primaryConnectionString)).Options))
     {
@@ -42,11 +43,13 @@ try
 }
 catch
 {
+    Console.WriteLine("Primary Database connection failed...");
     // If the primary connection string fails, use the fallback
     if (!string.IsNullOrEmpty(fallbackConnectionString))
     {
         try
         {
+            Console.WriteLine("Attempting to connect to fallback database...");
             using (var tempContext = new FlightPalContext(new DbContextOptionsBuilder<FlightPalContext>()
                 .UseMySql(fallbackConnectionString, ServerVersion.AutoDetect(fallbackConnectionString)).Options))
             {

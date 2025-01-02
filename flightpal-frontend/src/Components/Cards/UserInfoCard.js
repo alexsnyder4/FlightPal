@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { getUserById } from '../../Services/api';
+import AvatarSelectionModal from '../AvatarSelectionModal';
 import '../CSS/Card.css';
+import '../CSS/EditCardModal.css';
+
 
 const UserInfoCard = ({ userId }) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [user, setUser] = useState(null); // User data fetched
     const [error, setUserError] = useState(null);
+    const [avatar, setAvatar] = useState(null);
 
     useEffect(() => {
 
@@ -19,11 +24,20 @@ const UserInfoCard = ({ userId }) => {
 
         fetchUserData();
     }, [userId]);
-    const handleImageClick = () => {
-        // Handle profile picture logic here if needed in the future
-        alert("Profile picture functionality not yet implemented");
-    };
 
+
+
+    const onAvatarSelect = (avatar) => {
+        setAvatar(avatar)
+    }
+
+    const handleOpenModal = () => {
+        setIsModalOpen(true);
+      };
+    
+      const handleCloseModal = () => {
+        setIsModalOpen(false);
+      };
 
     if (error) {
         return <div>{error}</div>;
@@ -34,16 +48,27 @@ const UserInfoCard = ({ userId }) => {
     }
     return (
         <div className="card userinfo-card card-small">
+            {/* Welcome Message */}
             <div className='userinfo-text'>
                 <h2>Welcome, {user?.fName || 'User'}!</h2>
                 <p>We're glad to have you here.</p>
             </div>
-            <div className="profileppic-container">
-                {/* Circular button for the photo placeholder */}
-                <button className="button--profilepic" onClick={handleImageClick}>
-                    {/* This button will use a default background image */}
+
+            {/* Buttom to display profile picture and also open popup window to choose default or import a picture */}
+                <button className="button--profilepic" onClick={handleOpenModal}>
+                <img
+                        src={avatar || '/AvatarImages/Avatar1.png'} // Default avatar
+                        alt="Profile"
+                        className="profilepic"
+                    />
                 </button>
-            </div>
+            {/* Modal for avatar selection */}
+            {isModalOpen && (
+                <AvatarSelectionModal
+                    onClose={handleCloseModal}
+                    onAvatarSelect={onAvatarSelect}
+                />
+            )}
         </div>
     );
 };
