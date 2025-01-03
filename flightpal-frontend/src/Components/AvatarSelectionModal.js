@@ -27,19 +27,35 @@ const AvatarSelectionModal = ({ onClose, onAvatarSelect }) => {
                     <h2 className='modalheader'>Select Your Profile Picture</h2>
                     <button className='close' onClick={onClose}></button>
                     <div className="modalcontent">
-                        {/* Placeholder button for importing a photo */}
-                        <button
-                            className="button--profilepic"
-                            onClick={() => alert('Import photo functionality still in development!')}
-                        >
-                            <img src='./AvatarImages/ImportAvatar.png' alt='Import Avatar' className='avatar-image'/>
-                        </button>
+                    {/* Create a button that triggers hidden input click */}
+                    <button
+                        className="button--profilepic button--profilepic--mini"
+                        onClick={() => {
+                            document.getElementById('file-upload').click(); // Programmatically trigger the file input
+                        }}
+                    >
+                        <img
+                            src="/AvatarImages/ImportAvatar.png" // Replace with your desired image
+                            alt="Upload Avatar"
+                            className="avatar-image"
+                        />
+                    </button>
+
+                    {/* Hidden File Input */}
+                    <input
+                        type="file"
+                        id="file-upload"
+                        accept="image/*" // Accept only image files
+                        style={{ display: "none" }} // Hide the input
+                        onChange={(e) => console.log(e.target.files[0])} // Handle file selection
+                    />
+                        
 
                         {/* Render buttons for each stock avatar */}
                         {avatarList.map((avatar, index) => (
                             <button
                                 key={index}
-                                className="button--profilepic"
+                                className="button--profilepic button--profilepic--mini"
                                 onClick={() => {
                                     onAvatarSelect(avatar);
                                     onClose();
